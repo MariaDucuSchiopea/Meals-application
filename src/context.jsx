@@ -11,6 +11,20 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false)
   const [meals, setMeals] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [selectedMeal, setSelectedMeal] = useState(null)
+
+  const selectMeal = (idMeal, favoriteMeal) => {
+    let meal;
+    meal = meals.find((meal) => meal.idMeal === idMeal);
+    setSelectedMeal(meal);
+    setShowModal(true)
+    console.log("modal", showModal)
+  }
+
+  const closeModal = () => {
+    setShowModal(false)
+  }
 
   const fetchMeals = async (url) => {
     setLoading(true)
@@ -30,19 +44,19 @@ const AppProvider = ({ children }) => {
     fetchMeals(randomMealUrl)
   }
 
-useEffect(() => {
+  useEffect(() => {
     fetchMeals(`${allMealsUrl}c`)
   }, [])
 
-  
+
   useEffect(() => {
-    if(!searchTerm) return
+    if (!searchTerm) return
     fetchMeals(`${allMealsUrl}${searchTerm}`)
   }, [searchTerm])
 
 
 
-  return <AppContext.Provider value={{ loading, meals, setSearchTerm, fetchRandomMeal }}>
+  return <AppContext.Provider value={{ loading, meals, setSearchTerm, fetchRandomMeal, showModal, selectedMeal, selectMeal, closeModal }}>
     {children}
   </AppContext.Provider>
 }
