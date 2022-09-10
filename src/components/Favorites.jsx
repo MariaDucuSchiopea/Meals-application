@@ -1,5 +1,28 @@
+import { useGlobalContext } from '../context'
+
 const Favorites = () => {
-  return <h1>Favorites component</h1>
+  const { favorites, selectMeal, removeFromFavorites } = useGlobalContext()
+
+  return <section className="favorites">
+    <div className="favorites-content">
+      <h5>Favorites</h5>
+      <div className='favorites-container'>
+        {favorites.map((item) => {
+          const { idMeal, strMeal: title, strMealThumb: image } = item;
+
+          return <div key={idMeal} className="favorite-item">
+            <p className="favorite-title">{title}</p>
+            <img src={image} className="favorites-img img" alt={title} onClick={()=>selectMeal(idMeal, true)}/>
+            <button className="remove-btn" onClick={() => removeFromFavorites(idMeal)}>Remove</button>
+          </div>
+        })}
+      </div>
+    </div>
+
+
+  </section>
+
+
 }
-  
+
 export default Favorites;
